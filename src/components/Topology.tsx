@@ -7,6 +7,8 @@ import { TopologyData } from "@/types/topology";
 
 cytoscape.use(dagre);
 
+const STORAGE_KEY = "topology-positions";
+
 interface TopologyProps {
   data: TopologyData;
 }
@@ -105,16 +107,38 @@ export default function Topology({ data }: TopologyProps) {
           },
         },
       ],
-      layout: {
+    });
+
+    // восстанавливаем позиции если есть
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const positions = JSON.parse(saved);
+      cy.nodes().forEach((node) => {
+        if (positions[node.id()]) {
+          node.position(positions[node.id()]);
+        }
+      });
+      cy.fit();
+    } else {
+      cy.layout({
         name: "dagre",
         rankDir: "LR",
         padding: 40,
         spacingFactor: 1.2,
-      } as cytoscape.LayoutOptions,
+      } as cytoscape.LayoutOptions).run();
+    }
+
+    // сохраняем позиции при перетаскивании
+    cy.on("dragfree", "node", () => {
+      const positions: Record<string, { x: number; y: number }> = {};
+      cy.nodes().forEach((node) => {
+        positions[node.id()] = node.position();
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(positions));
     });
 
     return () => cy.destroy();
   }, [data]);
 
-  return <div ref={containerRef} style={{ width: "100%", height: "100vh" }} />;
+  return <div ref={containerRef} className="w-full h-screen" />;
 }
