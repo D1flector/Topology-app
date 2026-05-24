@@ -7,7 +7,7 @@ import {
   ConnectionType,
 } from "@/types/topology";
 
-const API_URL = "http://impulse.yadro.msk.ru";
+const API_URL = "/api/topology";
 
 const VALID_STATES: NodeState[] = ["ok", "error", "warning", "unknown"];
 const VALID_CONNECTION_TYPES: ConnectionType[] = ["line", "arrow", "dashed"];
