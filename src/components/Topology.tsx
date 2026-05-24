@@ -9,16 +9,16 @@ cytoscape.use(dagre);
 
 const STORAGE_KEY = "topology-positions";
 
-interface TopologyProps {
-  data: TopologyData;
-}
-
 const STATE_COLORS: Record<string, string> = {
   ok: "#22c55e",
   warning: "#f59e0b",
   error: "#e31e24",
   unknown: "#6b7280",
 };
+
+interface TopologyProps {
+  data: TopologyData;
+}
 
 export default function Topology({ data }: TopologyProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -51,45 +51,46 @@ export default function Topology({ data }: TopologyProps) {
         {
           selector: "node",
           style: {
-            "background-color": "#1e1e1e",
+            "background-color": "#252d3a",
             "border-width": 2,
-            "border-color": "#6b7280",
+            "border-color": "#2e3a4a",
             color: "#ffffff",
             "text-valign": "center",
             "text-halign": "center",
-            "font-size": "10px",
+            "font-size": "11px",
+            "font-family": "Arial, Helvetica, sans-serif",
             label: "data(label)",
+            shape: "roundrectangle",
+            width: 120,
+            height: 30,
           },
         },
-        {
-          selector: 'node[state="ok"]',
-          style: { "border-color": STATE_COLORS.ok },
-        },
-        {
-          selector: 'node[state="warning"]',
-          style: { "border-color": STATE_COLORS.warning },
-        },
-        {
-          selector: 'node[state="error"]',
-          style: { "border-color": STATE_COLORS.error },
-        },
+        ...Object.entries(STATE_COLORS).map(([state, color]) => ({
+          selector: `node[state="${state}"]`,
+          style: { "border-color": color },
+        })),
         {
           selector: "$node > node",
           style: {
-            "background-color": "#2a2a2a",
-            "border-color": "#444444",
+            "background-color": "#1a2233",
+            "border-color": "#3b5bdb",
+            "border-width": 2,
             "text-valign": "top",
-            "font-size": "11px",
-            padding: "20px",
+            "text-halign": "center",
+            "font-size": "12px",
+            "font-weight": "bold",
+            color: "#a0b0c0",
+            padding: "25px",
           },
         },
         {
           selector: "edge",
           style: {
             width: 1.5,
-            "line-color": "#4b5563",
-            "target-arrow-color": "#4b5563",
+            "line-color": "#3b5bdb",
+            "target-arrow-color": "#3b5bdb",
             "curve-style": "bezier",
+            opacity: 0.7,
           },
         },
         {
@@ -104,12 +105,13 @@ export default function Topology({ data }: TopologyProps) {
           style: {
             "line-style": "dashed",
             "target-arrow-shape": "none",
+            "line-color": "#6b7280",
+            "target-arrow-color": "#6b7280",
           },
         },
       ],
     });
 
-    // восстанавливаем позиции если есть
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       const positions = JSON.parse(saved);
@@ -128,7 +130,6 @@ export default function Topology({ data }: TopologyProps) {
       } as cytoscape.LayoutOptions).run();
     }
 
-    // сохраняем позиции при перетаскивании
     cy.on("dragfree", "node", () => {
       const positions: Record<string, { x: number; y: number }> = {};
       cy.nodes().forEach((node) => {
@@ -140,5 +141,5 @@ export default function Topology({ data }: TopologyProps) {
     return () => cy.destroy();
   }, [data]);
 
-  return <div ref={containerRef} className="w-full h-screen" />;
+  return <div ref={containerRef} className="w-full h-full" />;
 }

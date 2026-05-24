@@ -9,6 +9,18 @@
   --accent: #3b5bdb;
 }
 
+@theme {
+  --color-background: #1e2530;
+  --color-surface: #252d3a;
+  --color-border-custom: #2e3a4a;
+  --color-muted: #8892a0;
+  --color-accent: #3b5bdb;
+  --color-ok: #22c55e;
+  --color-warning: #f59e0b;
+  --color-error: #e31e24;
+  --color-unknown: #6b7280;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

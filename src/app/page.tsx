@@ -18,15 +18,12 @@ export default function Home() {
     <main className="flex flex-col h-screen">
       <Header />
       {loading && (
-        <div
-          className="flex-1 flex items-center justify-center"
-          style={{ color: "var(--muted)" }}
-        >
+        <div className="flex-1 flex items-center justify-center text-muted">
           Загрузка топологии...
         </div>
       )}
       {error && (
-        <div className="flex-1 flex items-center justify-center text-red-500">
+        <div className="flex-1 flex items-center justify-center text-error">
           Ошибка: {error}
         </div>
       )}
@@ -35,46 +32,27 @@ export default function Home() {
           <div className="absolute top-4 right-4 z-10 flex flex-col gap-3">
             <button
               onClick={handleReset}
-              className="px-4 py-2 text-sm font-medium text-white rounded"
-              style={{ background: "var(--accent)" }}
+              className="px-4 py-2 text-sm font-medium text-white rounded bg-accent"
             >
               Сбросить позиции
             </button>
-            <div
-              className="p-3 rounded text-sm flex flex-col gap-2"
-              style={{
-                background: "var(--surface)",
-                border: "1px solid var(--border)",
-              }}
-            >
+            <div className="p-3 rounded text-sm flex flex-col gap-2 bg-surface border border-border-custom">
               <span className="font-semibold text-white mb-1">Статус нод</span>
               <div className="flex items-center gap-2">
-                <span
-                  className="w-3 h-3 rounded-full inline-block"
-                  style={{ background: "#22c55e" }}
-                />
-                <span style={{ color: "var(--muted)" }}>OK</span>
+                <span className="w-3 h-3 rounded-full inline-block bg-ok" />
+                <span className="text-muted">OK</span>
               </div>
               <div className="flex items-center gap-2">
-                <span
-                  className="w-3 h-3 rounded-full inline-block"
-                  style={{ background: "#f59e0b" }}
-                />
-                <span style={{ color: "var(--muted)" }}>Warning</span>
+                <span className="w-3 h-3 rounded-full inline-block bg-warning" />
+                <span className="text-muted">Warning</span>
               </div>
               <div className="flex items-center gap-2">
-                <span
-                  className="w-3 h-3 rounded-full inline-block"
-                  style={{ background: "#e31e24" }}
-                />
-                <span style={{ color: "var(--muted)" }}>Error</span>
+                <span className="w-3 h-3 rounded-full inline-block bg-error" />
+                <span className="text-muted">Error</span>
               </div>
               <div className="flex items-center gap-2">
-                <span
-                  className="w-3 h-3 rounded-full inline-block"
-                  style={{ background: "#6b7280" }}
-                />
-                <span style={{ color: "var(--muted)" }}>Unknown</span>
+                <span className="w-3 h-3 rounded-full inline-block bg-unknown" />
+                <span className="text-muted">Unknown</span>
               </div>
             </div>
           </div>
